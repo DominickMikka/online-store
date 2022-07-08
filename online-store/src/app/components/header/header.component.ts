@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
   selector: 'app-header',
@@ -9,10 +8,8 @@ import { ProductsService } from 'src/app/services/products.service';
 export class HeaderComponent implements OnInit {
   @Input() color?: string;
 
-  constructor(private productsService: ProductsService) { }
+  constructor() { }
 
-  ngOnInit(): void {
-    this.productsService.getProducts();
-  }
+  ngOnInit(): void { }
 
 }
