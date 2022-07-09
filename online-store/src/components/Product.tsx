@@ -1,28 +1,30 @@
 import React from 'react';
+import { Product as IProduct} from '../interfaces/products';
 
-const Product = () => {
+const Product = (props: IProduct) => {
+
   return (
     <div className="product">
       <div className="product-image">
-        <img src="./assets/images/products/{{ product.image }}" width="200" alt="" />
+        <img src={require(`../assets/images/products/${props.image}`)} width="200" alt="" />
       </div>
       <div className="product-name">
-        Name:
+        Name: {props.name}
       </div>
       <div className="product-year">
-        Year: 
+        Year: {props.year}
       </div>
       <div className="product-platform">
-        Platform: 
+        Platform: {props.platform}
       </div>
       <div className="product-brand">
-        Brand: 
+        Brand: {props.brand}
       </div>
       <div className="product-popular">
-        Popular: 
+        Popular: {props.popular}
       </div>
       <div className="product-quantity">
-        Quantity: 
+        Quantity: {props.quantity}
       </div>
       <button className="product-add-to-cart">Add to cart</button>
     </div>
