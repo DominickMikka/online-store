@@ -6,12 +6,16 @@ class Products {
   allProducts: IProduct[];
   productsElement: HTMLElement;
   sortElement: HTMLElement;
+  cartElement: HTMLElement;
+  countProducts: number;
 
-  constructor(products: IProduct[], productsElement: HTMLElement, sortElement: HTMLElement) {
+  constructor(products: IProduct[], productsElement: HTMLElement, sortElement: HTMLElement, cartElement: HTMLElement) {
     this.products = [...products];
     this.productsElement = productsElement as HTMLElement;
     this.sortElement = sortElement as HTMLElement;
     this.allProducts = [...products];
+    this.cartElement = cartElement;
+    this.countProducts = 0;
   }
 
   getProducts(): IProduct[] {
@@ -31,10 +35,9 @@ class Products {
     return this.products
   }
 
-  sortProducts(products: IProduct[], event: Event): IProduct[] {
-    const sortType: string = (event.target as HTMLInputElement).value;
+  sortProducts(products: IProduct[], sort: string): IProduct[] {
     const prod = [...products];
-    switch (sortType) {
+    switch (sort) {
       case 'name_ask':
         prod.sort((a, b) => a.name.localeCompare(b.name));
         break;
@@ -80,7 +83,7 @@ class Products {
   private renderProduct(product: IProduct): HTMLElement {
     const component: HTMLElement = document.createElement('div');
     component.classList.add("product");
-    component.id = `product${product.id}`;
+    
     component.innerHTML = `
         <div class="product-image">
           <img src="./assets/images/products/${product.image}" width="200" alt="" />
@@ -103,12 +106,47 @@ class Products {
         <div class="product-quantity">
           Quantity: ${product.quantity}
         </div>
-        <button class="product-add-to-cart">
-          Add to cart
-        </button>
     `;
+    const button: HTMLElement = document.createElement('button');
+    button.classList.add("product-add-to-cart");
+    button.innerHTML = ` Add to cart `;
+    button.addEventListener('click', () => {
+      this.addToCart(product);
+    });
+    button.id = `product${product.id}`;
+    component.appendChild(button);
   
     return component
+  }
+
+  addToCart(product: IProduct) {
+
+    if (!product.inCart) {
+      product.inCart = true;
+    } else {
+      product.inCart = false;
+    }
+
+    console.log(product);
+
+    this.updateCountProducts(product.inCart);
+  }
+
+  renderCountProducts(): void {
+    this.cartElement.innerHTML = `${this.countProducts}`;
+  }
+
+  updateCountProducts(status: boolean): number {
+
+    if (status) {
+      this.countProducts++
+    } else {
+      this.countProducts--
+    }
+
+    this.renderCountProducts();
+
+    return this.countProducts
   }
 }
 

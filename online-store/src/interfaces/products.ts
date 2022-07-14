@@ -6,5 +6,6 @@ export interface IProduct {
   name: string,
   year: number,
   popular: string,
-  image: string
+  image: string,
+  inCart?: boolean,
 }
