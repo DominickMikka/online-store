@@ -11,26 +11,62 @@
   <header>
     <div class="logo">
       <a href="#">VGS</a>
+      <span>Video Games Store</span>
     </div>
-    <div>
+    <div class="search-wrapper">
       <input type="text" placeholder="Search for games" class="search__input" />
-      <div>
-        <select class="sort">
-          <option disabled selected>Sort by</option>
-          <option value="name_ask">Sort by name: ascending</option>
-          <option value="name_desk">Sort by name: descending</option>
-          <option value="year_low_high">Sort by year: low to high</option>
-          <option value="year_high_low">Sort by year: high to low</option>
-        </select>
-      </div>
     </div>
-    <div class="cart">Number of products: <span class="cartValue"></span></div>
+    <div class="cart">
+      <div class="cartValue"></div>
+    </div>
   </header>
   <main>
     <aside>
-      <div class="filters">Filters</div>
+      <div class="platform-filters">
+        <span class="filter-title">Platform</span>
+        <label><input type="checkbox" value="Nintendo Switch" /> Nintendo Switch</label>
+        <label><input type="checkbox" value="PS4" /> PS4</label>
+        <label><input type="checkbox" value="PS5" /> PS5</label>
+        <label><input type="checkbox" value="Xbox One" /> Xbox One</label>
+        <label><input type="checkbox" value="Xbox Series S | X" /> Xbox Series S | X</label>
+      </div>
+
+      <div class="brand-filters">
+        <span class="filter-title">Brand</span>
+        <label><input type="checkbox" /> Microsoft</label>
+        <label><input type="checkbox" /> Nintendo</label>
+        <label><input type="checkbox" /> Sony</label>
+      </div>
+
+      <div class="popular-filters">
+        <span class="filter-title">Popular</span>
+        <label><input type="checkbox" /> Yes</label>
+      </div>
+
+      <div class="year-filters">
+        <span class="filter-title">Year</span>
+        <div class="sliderYear"></div>
+      </div>
+
+      <div class="quantity-filters">
+        <span class="filter-title">Quantity</span>
+        <div class="sliderQuantity"></div>
+      </div>
+
     </aside>
-    <div class="products"></div>
+    <div class="products-wrapper">
+      <div class="sort-wrapper">
+        Sort by: 
+        <select class="sort">
+          <option disabled selected>Change:</option>
+          <option value="name_ask">Name (ascending)</option>
+          <option value="name_desk">Name (descending)</option>
+          <option value="year_low_high">Year (low to high)</option>
+          <option value="year_high_low">Year (high to low)</option>
+        </select>
+      </div>
+      <div class="products"></div>
+    </div>
   </main>
 </body>
 </html>

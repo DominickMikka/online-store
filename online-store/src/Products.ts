@@ -8,6 +8,7 @@ class Products {
   sortElement: HTMLElement;
   cartElement: HTMLElement;
   countProducts: number;
+  productsInCart: number[];
 
   constructor(products: IProduct[], productsElement: HTMLElement, sortElement: HTMLElement, cartElement: HTMLElement) {
     this.products = [...products];
@@ -16,6 +17,7 @@ class Products {
     this.allProducts = [...products];
     this.cartElement = cartElement;
     this.countProducts = 0;
+    this.productsInCart = [];
   }
 
   getProducts(): IProduct[] {
@@ -89,30 +91,48 @@ class Products {
           <img src="./assets/images/products/${product.image}" width="200" alt="" />
         </div>
         <div class="product-name">
-          Name: ${product.name}
+          <span class="label">Name:</span> ${product.name}
         </div>
         <div class="product-year">
-          Year: ${product.year}
+          <span class="label">Year:</span> ${product.year}
         </div>
         <div class="product-platform">
-          Platform: ${product.platform}
+          <span class="label">Platform:</span> ${product.platform}
         </div>
         <div class="product-brand">
-          Brand: ${product.brand}
+          <span class="label">Brand:</span> ${product.brand}
         </div>
         <div class="product-popular">
-          Popular: ${product.popular}
+          <span class="label">Popular:</span> ${product.popular}
         </div>
         <div class="product-quantity">
-          Quantity: ${product.quantity}
+          <span class="label">Quantity:</span> ${product.quantity}
         </div>
     `;
     const button: HTMLElement = document.createElement('button');
     button.classList.add("product-add-to-cart");
     button.innerHTML = ` Add to cart `;
-    button.addEventListener('click', () => {
-      this.addToCart(product);
-    });
+
+      button.addEventListener('click', () => {
+        this.addToCart(product);
+
+        if (this.productsInCart.includes(product.id)) {
+          component.classList.add("in-cart");
+        } else {
+          component.classList.remove("in-cart");
+        }
+
+      });
+
+        if (this.productsInCart.includes(product.id)) {
+          component.classList.add("in-cart");
+        } else {
+          component.classList.remove("in-cart");
+        }
+
+      console.log(this.productsInCart);
+      console.log(product.id);
+
     button.id = `product${product.id}`;
     component.appendChild(button);
   
@@ -120,34 +140,47 @@ class Products {
   }
 
   addToCart(product: IProduct) {
+    if (!this.productsInCart.includes(product.id)) {
 
-    if (!product.inCart) {
-      product.inCart = true;
+      if (this.productsInCart.length === 20) {
+        window.alert('Too much product added in the cart:(');
+      } else {
+        this.productsInCart.push(product.id);
+      }
+      
     } else {
-      product.inCart = false;
-    }
-
-    console.log(product);
-
-    this.updateCountProducts(product.inCart);
-  }
-
-  renderCountProducts(): void {
-    this.cartElement.innerHTML = `${this.countProducts}`;
-  }
-
-  updateCountProducts(status: boolean): number {
-
-    if (status) {
-      this.countProducts++
-    } else {
-      this.countProducts--
+      this.productsInCart.splice(this.productsInCart.indexOf(product.id), 1)
     }
 
     this.renderCountProducts();
-
-    return this.countProducts
   }
+
+  renderCountProducts(): void {
+    this.cartElement.innerHTML = `${this.productsInCart.length}`;
+  }
+
+  filterProductByPlatform(products: IProduct[], filter: string[]) {
+    const prod: IProduct[] = [];
+
+    if (filter.length === 0) {
+      return this.allProducts
+    }
+
+    if (products.length === 0) {
+      products = this.allProducts;
+    }
+
+    products.forEach(e => {
+      if (filter.includes(e.platform)) {
+        prod.push(e);
+      }
+    });
+
+    this.products = [...prod];
+
+    return this.products
+  }
+
 }
 
 export default Products
