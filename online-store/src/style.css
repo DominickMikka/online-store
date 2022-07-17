@@ -13,13 +13,9 @@ body {
 
 header {
   display: flex;
-  margin: 20px;
+  gap: 20px;
   justify-content: space-between;
-}
-
-.logo {
-  flex-grow: 1;
-  max-width: 50%;
+  margin: 20px;
 }
 
 .logo a {
@@ -33,13 +29,8 @@ header {
   font-size: 12px;
 }
 
-.search-wrapper {
-  max-width: 15%;
-  flex-grow: 1;
-}
-
 .search__input {
-  width: 100%;
+  max-width: 200px;
   height: 30px;
   padding: 5px 5px 5px 10px;
 }
@@ -53,11 +44,10 @@ main {
 
 .cart {
   background: url(./assets/images/cart.png) no-repeat;
-  position: fixed;
   width: 50px;
   height: 50px;
-  right: 30px;
-  top: 75px;
+  right: 20px;
+  position: relative;
 }
 
 .cartValue {
@@ -161,6 +151,7 @@ aside {
 
 .filter-title {
   font-weight: bold;
+  margin-top: 20px;
 }
 
 .platform-filters label, .brand-filters label, .popular-filters label {
@@ -170,6 +161,23 @@ aside {
   cursor: pointer;
 }
 
+.filters label:hover {
+  color: #c0392b;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 20px;
+  font-size: 12px;
+}
+
+.github-link {
+  font-size: 12px;
+  color: #c0392b;
+}
+
 input[type="checkbox"] {
   border-radius: 50px;
   border: 1px solid #000;
@@ -177,11 +185,16 @@ input[type="checkbox"] {
   -webkit-appearance: none;
   width: 20px;
   height: 20px;
+  min-width: 20px;
   cursor: pointer;
 }
 
 input[type="checkbox"]:checked {
   background-color: #c0392b;
+}
+
+.product-name {
+  min-height: 44px;
 }
 
 .sliderYear, .sliderQuantity {
@@ -226,4 +239,68 @@ input[type="checkbox"]:checked {
   bottom: -10px;
   width: auto;
   height: auto;
+}
+
+@media (max-width: 768px)  {
+  main {
+    flex-direction: column;
+  }
+
+  aside {
+    flex-direction: row;
+    width: 100%;
+    font-size: 14px;
+    flex-wrap: wrap;
+    gap: 20px 50px;
+    justify-content: center;
+  }
+
+  .filters {
+    justify-content: space-between;
+    display: flex;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .products {
+    justify-content: center;
+  }
+
+  .sort-wrapper {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .year-filters, .quantity-filters {
+    min-width: 200px;
+  }
+
+  .filter-title {
+    margin: 0;
+  }
+}
+
+@media (max-width: 460px)  {
+  .search-wrapper {
+    order: 2;
+  }
+
+  header {
+    flex-wrap: wrap;
+  }
+
+  .search__input {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .search-wrapper {
+    width: 100%;
+  }
+
+  .year-filters, .quantity-filters {
+    min-width: 95%;
+  }
 }

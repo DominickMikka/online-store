@@ -5,14 +5,12 @@ class Products {
   products: IProduct[];
   allProducts: IProduct[];
   productsElement: HTMLElement;
-  sortElement: HTMLElement;
   cartElement: HTMLElement;
-  countProducts: number;
   productsInCart: number[];
   visibleProducts: IProduct[];
   productsForSearch: IProduct[];
 
-  constructor(products: IProduct[], productsElement: HTMLElement, sortElement: HTMLElement, cartElement: HTMLElement) {
+  constructor(products: IProduct[], productsElement: HTMLElement, cartElement: HTMLElement) {
     this.products = [...products];
 
     this.products.forEach(product => {
@@ -20,10 +18,8 @@ class Products {
     });
 
     this.productsElement = productsElement as HTMLElement;
-    this.sortElement = sortElement as HTMLElement;
     this.allProducts = [...products];
     this.cartElement = cartElement;
-    this.countProducts = 0;
     this.productsInCart = [];
     this.visibleProducts = [...products];
     this.productsForSearch = [];
@@ -71,22 +67,12 @@ class Products {
     button.classList.add("product-add-to-cart");
     button.innerHTML = ` Add to cart `;
 
-      button.addEventListener('click', () => {
-        this.addToCart(product);
+    button.addEventListener('click', () => {
+      this.addToCart(product);
+      this.productsInCart.includes(product.id) ? component.classList.add("in-cart") : component.classList.remove("in-cart");
+    });
 
-        if (this.productsInCart.includes(product.id)) {
-          component.classList.add("in-cart");
-        } else {
-          component.classList.remove("in-cart");
-        }
-
-      });
-
-        if (this.productsInCart.includes(product.id)) {
-          component.classList.add("in-cart");
-        } else {
-          component.classList.remove("in-cart");
-        }
+    this.productsInCart.includes(product.id) ? component.classList.add("in-cart") : component.classList.remove("in-cart");
 
     button.id = `product${product.id}`;
     component.appendChild(button);
@@ -115,36 +101,19 @@ class Products {
   }
 
   findProduct(searchString: string) {
-    //const foundProducts: IProduct[] = [];
-    //this.productsForSearch = [...this.visibleProducts];
-
     if (searchString === '') {
       this.renderProducts(this.products);
     } else {
-      /*this.products.forEach(product => {
-        if (product.name.toLowerCase().includes(searchString.toLowerCase())) {
-          this.visible = true;
-        }
-      });*/
 
-      this.products.map((product) => {
+      this.visibleProducts.map((product) => {
         if (product.name.toLowerCase().includes(searchString.toLowerCase())) {
           product.visible = true;
-          //console.log(product);
+        } else {
+          product.visible = false;
         }
       });
 
-      console.log(this.products);
-
-      //console.log(this.products);
       this.renderProducts(this.products);
-      //this.productsForSearch.map((product) => {
-        //if (product.name.toLowerCase().includes(searchString.toLowerCase())) {
-          //foundProducts.push(product);
-        //}
-      //});
-      //this.renderProducts(foundProducts);
-      //this.productsForSearch = [...foundProducts];
     }
   }
 
@@ -169,7 +138,6 @@ class Products {
   }
 
   filter(filter: string[][]) {
-
     if (filter[0].length === 0 && filter[1].length === 0 && filter[2].length === 0) {
       this.products.forEach(product => {
         product.visible = true;
@@ -180,43 +148,23 @@ class Products {
     }
 
     this.products.map(product => {
-
-      const status: boolean[] = []
+      const status: boolean[] = [];
 
       if (filter[0].length !== 0) {
-        if (filter[0].includes(product.platform)) {
-          status[0] = true;
-        } else {
-          status[0] = false;
-        }
+        filter[0].includes(product.platform) ? status[0] = true : status[0] = false;
       }
 
       if (filter[1].length !== 0) {
-        if (filter[1].includes(product.brand)) {
-          status[1] = true;
-        } else {
-          status[1] = false;
-        }
+        filter[1].includes(product.brand) ? status[1] = true : status[1] = false;
       }
 
       if (filter[2].length !== 0) {
-        if (filter[2].includes(product.popular)) {
-          status[2] = true;
-        } else {
-          status[2] = false;
-        }
+        filter[2].includes(product.popular) ? status[2] = true : status[2] = false;
       }
 
-      if (status.every((element) => {
-        if (element === true) {
-          return true
-        }
-      } )) {
-        product.visible = true;
-      } else {
-        product.visible = false;
-      }
-
+      status.every((element) => { 
+        if (element === true) return true
+      }) ? product.visible = true : product.visible = false;
     });
 
     this.renderProducts(this.products);

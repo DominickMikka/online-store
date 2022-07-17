@@ -39,7 +39,7 @@ noUiSlider.create(sliderQuantityproductsElement, {
   tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
 });
 
-const products = new Products(allProducts, productsElement, sortElement, cartElement);
+const products = new Products(allProducts, productsElement, cartElement);
 
 products.renderCountProducts();
 products.renderProducts(allProducts);
@@ -51,8 +51,6 @@ sortElement.addEventListener('change', (e) => {
 search.addEventListener('input', (e) => {
   products.findProduct((e.target as HTMLSelectElement).value);
 });
-
-
 
 filtersPlatformElement.forEach(e => {
   e.addEventListener('change', () => {
@@ -77,28 +75,23 @@ filtersPopularElement.forEach(e => {
 
 const getFilters = () => {
   const filtersPlatform: string[] = [];
-
-  filtersPlatformElement.forEach(element => {
-    if ((element as HTMLInputElement).checked) {
-      filtersPlatform.push((element as HTMLInputElement).value);
-    }
-  });
-
   const filtersBrand: string[] = [];
-
-  filtersBrandElement.forEach(element => {
-    if ((element as HTMLInputElement).checked) {
-      filtersBrand.push((element as HTMLInputElement).value);
-    }
-  });
-
   const filtersPopular: string[] = [];
 
-    filtersPopularElement.forEach(element => {
-      if ((element as HTMLInputElement).checked) {
-        filtersPopular.push((element as HTMLInputElement).value);
-      }
-    });
+  filtersPlatformElement.forEach(element => {
+    if ((element as HTMLInputElement).checked) 
+      filtersPlatform.push((element as HTMLInputElement).value);
+  });
+
+  filtersBrandElement.forEach(element => {
+    if ((element as HTMLInputElement).checked) 
+      filtersBrand.push((element as HTMLInputElement).value);
+  });
+
+  filtersPopularElement.forEach(element => {
+    if ((element as HTMLInputElement).checked) 
+      filtersPopular.push((element as HTMLInputElement).value);
+  });
 
   return [filtersPlatform, filtersBrand, filtersPopular]
 }
