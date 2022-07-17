@@ -11,7 +11,10 @@ const productsElement = <HTMLElement>document.querySelector('.products');
 const sortElement = <HTMLSelectElement>document.querySelector('.sort');
 const search = <HTMLElement>document.querySelector('.search__input');
 const cartElement = <HTMLElement>document.querySelector('.cartValue');
-const platformFilters = document.querySelectorAll<HTMLElement>('.platform-filters input[type=checkbox]');
+const filtersPlatformElement = document.querySelectorAll<HTMLElement>('.platform-filters input[type=checkbox]');
+const filtersBrandElement = document.querySelectorAll<HTMLElement>('.brand-filters input[type=checkbox]');
+const filtersPopularElement = document.querySelectorAll<HTMLElement>('.popular-filters input[type=checkbox]');
+
 
 const sliderYearproductsElement = <HTMLElement>document.querySelector('.sliderYear');
 const sliderQuantityproductsElement = <HTMLElement>document.querySelector('.sliderQuantity');
@@ -39,33 +42,63 @@ noUiSlider.create(sliderQuantityproductsElement, {
 const products = new Products(allProducts, productsElement, sortElement, cartElement);
 
 products.renderCountProducts();
-
-let currentProducts = products.renderProducts(allProducts);
+products.renderProducts(allProducts);
 
 sortElement.addEventListener('change', (e) => {
-  currentProducts = products.sortProducts(currentProducts, (e.target as HTMLSelectElement).value);
-  currentProducts = products.renderProducts(currentProducts);
-  console.log(currentProducts);
+  products.sortProducts((e.target as HTMLSelectElement).value);
 });
 
 search.addEventListener('input', (e) => {
-  currentProducts = products.findProduct(currentProducts, e);
-  currentProducts = products.sortProducts(currentProducts, sortElement.options[sortElement.selectedIndex].value);
-  currentProducts = products.renderProducts(currentProducts);
-  console.log(currentProducts);
+  products.findProduct((e.target as HTMLSelectElement).value);
 });
 
 
 
-platformFilters.forEach(e => {
+filtersPlatformElement.forEach(e => {
   e.addEventListener('change', () => {
-    const filters: string[] = [];
-    platformFilters.forEach(element => {
+    const filters = getFilters();
+    products.filter(filters);
+  });
+});
+
+filtersBrandElement.forEach(e => {
+  e.addEventListener('change', () => {
+    const filters = getFilters();
+    products.filter(filters);
+  });
+});
+
+filtersPopularElement.forEach(e => {
+  e.addEventListener('change', () => {
+    const filters = getFilters();
+    products.filter(filters);
+  });
+});
+
+const getFilters = () => {
+  const filtersPlatform: string[] = [];
+
+  filtersPlatformElement.forEach(element => {
+    if ((element as HTMLInputElement).checked) {
+      filtersPlatform.push((element as HTMLInputElement).value);
+    }
+  });
+
+  const filtersBrand: string[] = [];
+
+  filtersBrandElement.forEach(element => {
+    if ((element as HTMLInputElement).checked) {
+      filtersBrand.push((element as HTMLInputElement).value);
+    }
+  });
+
+  const filtersPopular: string[] = [];
+
+    filtersPopularElement.forEach(element => {
       if ((element as HTMLInputElement).checked) {
-        filters.push((element as HTMLInputElement).value);
+        filtersPopular.push((element as HTMLInputElement).value);
       }
     });
-    currentProducts = products.filterProductByPlatform(currentProducts, filters);
-    currentProducts = products.renderProducts(currentProducts);
-    });
-});
+
+  return [filtersPlatform, filtersBrand, filtersPopular]
+}

@@ -9,77 +9,35 @@ class Products {
   cartElement: HTMLElement;
   countProducts: number;
   productsInCart: number[];
+  visibleProducts: IProduct[];
+  productsForSearch: IProduct[];
 
   constructor(products: IProduct[], productsElement: HTMLElement, sortElement: HTMLElement, cartElement: HTMLElement) {
     this.products = [...products];
+
+    this.products.forEach(product => {
+      product.visible = true;
+    });
+
     this.productsElement = productsElement as HTMLElement;
     this.sortElement = sortElement as HTMLElement;
     this.allProducts = [...products];
     this.cartElement = cartElement;
     this.countProducts = 0;
     this.productsInCart = [];
+    this.visibleProducts = [...products];
+    this.productsForSearch = [];
   }
 
-  getProducts(): IProduct[] {
-    return this.products
-  }
-
-  renderProducts(products: IProduct[]): IProduct[] {
+  renderProducts(products: IProduct[]) {
     if (this.productsElement) {
       this.productsElement.innerHTML = ``;
       products.map((product) => {
-        this.productsElement.appendChild(this.renderProduct(product));
+        if (product.visible) {
+          this.productsElement.appendChild(this.renderProduct(product));
+        }
       });
     }
-
-    this.products = [...products];
-
-    return this.products
-  }
-
-  sortProducts(products: IProduct[], sort: string): IProduct[] {
-    const prod = [...products];
-    switch (sort) {
-      case 'name_ask':
-        prod.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case 'name_desk':
-        prod.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      case 'year_low_high':
-        prod.sort((a, b) => a.year - b.year);
-        break;
-      case 'year_high_low':
-        prod.sort((a, b) => b.year - a.year);
-        break;
-      default:
-        break;
-      } 
-
-      this.products = [...prod];
-
-    return this.products
-  }
-
-  findProduct(products: IProduct[], event: Event): IProduct[] {
-    const filter: string = (event.target as HTMLInputElement).value;
-    const prod: IProduct[] = [];
-
-    if (filter === '') {
-      return this.allProducts
-    }
-
-    products.map((p) => {
-      if (filter) {
-        if ((p.name).toLowerCase().includes(filter.toLowerCase())) {
-          prod.push(p);
-        }
-      }
-    });
-
-    this.products = [...prod];
-
-    return this.products
   }
 
   private renderProduct(product: IProduct): HTMLElement {
@@ -130,13 +88,64 @@ class Products {
           component.classList.remove("in-cart");
         }
 
-      console.log(this.productsInCart);
-      console.log(product.id);
-
     button.id = `product${product.id}`;
     component.appendChild(button);
   
     return component
+  }
+
+  sortProducts(sort: string) {
+    switch (sort) {
+      case 'name_ask':
+        this.products.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'name_desk':
+        this.products.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case 'year_low_high':
+        this.products.sort((a, b) => a.year - b.year);
+        break;
+      case 'year_high_low':
+        this.products.sort((a, b) => b.year - a.year);
+        break;
+      default:
+        break;
+    }
+    this.renderProducts(this.products);
+  }
+
+  findProduct(searchString: string) {
+    //const foundProducts: IProduct[] = [];
+    //this.productsForSearch = [...this.visibleProducts];
+
+    if (searchString === '') {
+      this.renderProducts(this.products);
+    } else {
+      /*this.products.forEach(product => {
+        if (product.name.toLowerCase().includes(searchString.toLowerCase())) {
+          this.visible = true;
+        }
+      });*/
+
+      this.products.map((product) => {
+        if (product.name.toLowerCase().includes(searchString.toLowerCase())) {
+          product.visible = true;
+          //console.log(product);
+        }
+      });
+
+      console.log(this.products);
+
+      //console.log(this.products);
+      this.renderProducts(this.products);
+      //this.productsForSearch.map((product) => {
+        //if (product.name.toLowerCase().includes(searchString.toLowerCase())) {
+          //foundProducts.push(product);
+        //}
+      //});
+      //this.renderProducts(foundProducts);
+      //this.productsForSearch = [...foundProducts];
+    }
   }
 
   addToCart(product: IProduct) {
@@ -159,26 +168,58 @@ class Products {
     this.cartElement.innerHTML = `${this.productsInCart.length}`;
   }
 
-  filterProductByPlatform(products: IProduct[], filter: string[]) {
-    const prod: IProduct[] = [];
+  filter(filter: string[][]) {
 
-    if (filter.length === 0) {
-      return this.allProducts
+    if (filter[0].length === 0 && filter[1].length === 0 && filter[2].length === 0) {
+      this.products.forEach(product => {
+        product.visible = true;
+      });
+      this.renderProducts(this.products);
+
+      return
     }
 
-    if (products.length === 0) {
-      products = this.allProducts;
-    }
+    this.products.map(product => {
 
-    products.forEach(e => {
-      if (filter.includes(e.platform)) {
-        prod.push(e);
+      const status: boolean[] = []
+
+      if (filter[0].length !== 0) {
+        if (filter[0].includes(product.platform)) {
+          status[0] = true;
+        } else {
+          status[0] = false;
+        }
       }
+
+      if (filter[1].length !== 0) {
+        if (filter[1].includes(product.brand)) {
+          status[1] = true;
+        } else {
+          status[1] = false;
+        }
+      }
+
+      if (filter[2].length !== 0) {
+        if (filter[2].includes(product.popular)) {
+          status[2] = true;
+        } else {
+          status[2] = false;
+        }
+      }
+
+      if (status.every((element) => {
+        if (element === true) {
+          return true
+        }
+      } )) {
+        product.visible = true;
+      } else {
+        product.visible = false;
+      }
+
     });
 
-    this.products = [...prod];
-
-    return this.products
+    this.renderProducts(this.products);
   }
 
 }

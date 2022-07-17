@@ -8,4 +8,5 @@ export interface IProduct {
   popular: string,
   image: string,
   inCart?: boolean,
+  visible?: boolean
 }
