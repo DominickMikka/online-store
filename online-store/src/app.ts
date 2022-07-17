@@ -2,9 +2,7 @@ import { allProducts } from './data/data';
 import './style.css';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
-
 import wNumb from 'wnumb';
-
 import Products from './Products';
 
 const productsElement = <HTMLElement>document.querySelector('.products');
@@ -14,26 +12,19 @@ const cartElement = <HTMLElement>document.querySelector('.cartValue');
 const filtersPlatformElement = document.querySelectorAll<HTMLElement>('.platform-filters input[type=checkbox]');
 const filtersBrandElement = document.querySelectorAll<HTMLElement>('.brand-filters input[type=checkbox]');
 const filtersPopularElement = document.querySelectorAll<HTMLElement>('.popular-filters input[type=checkbox]');
-
-
+const clearFilersElement = <HTMLElement>document.querySelector('.reset-filters');
 const sliderYearproductsElement = <HTMLElement>document.querySelector('.sliderYear');
 const sliderQuantityproductsElement = <HTMLElement>document.querySelector('.sliderQuantity');
 
 noUiSlider.create(sliderYearproductsElement, {
-  range: {
-      'min': 2020,
-      'max': 2022
-  },
+  range: {'min': 2020, 'max': 2022},
   snap: false,
   start: [2020, 2022],
   tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
 });
 
 noUiSlider.create(sliderQuantityproductsElement, {
-  range: {
-      'min': 10,
-      'max': 25
-  },
+  range: {'min': 10, 'max': 25},
   snap: false,
   start: [10, 25],
   tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
@@ -95,3 +86,20 @@ const getFilters = () => {
 
   return [filtersPlatform, filtersBrand, filtersPopular]
 }
+
+clearFilersElement.addEventListener('click', () => {
+
+  filtersPlatformElement.forEach(element => {
+    (element as HTMLInputElement).checked = false
+  });
+
+  filtersBrandElement.forEach(element => {
+    (element as HTMLInputElement).checked = false
+  });
+
+  filtersPopularElement.forEach(element => {
+    (element as HTMLInputElement).checked = false
+  });
+
+  products.filter([[], [], []]);
+});

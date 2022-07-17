@@ -26,13 +26,23 @@ class Products {
   }
 
   renderProducts(products: IProduct[]) {
+
+    let visibleProductsCount = 0;
+
     if (this.productsElement) {
       this.productsElement.innerHTML = ``;
+
       products.map((product) => {
         if (product.visible) {
           this.productsElement.appendChild(this.renderProduct(product));
+          visibleProductsCount++;
         }
       });
+
+      if (visibleProductsCount === 0) {
+        this.productsElement.innerHTML = `Sorry, no products :(`;
+      }
+
     }
   }
 
@@ -121,7 +131,12 @@ class Products {
     if (!this.productsInCart.includes(product.id)) {
 
       if (this.productsInCart.length === 20) {
-        window.alert('Too much product added in the cart:(');
+        const bodyElement = <HTMLElement>document.querySelector('body');
+        const errorCart: HTMLElement = document.createElement('div');
+        errorCart.classList.add("errorCart");
+        errorCart.innerHTML = `Sorry, but all the slots are full!`;
+        bodyElement.prepend(errorCart);
+        setTimeout(() => { errorCart.remove() }, 5000);
       } else {
         this.productsInCart.push(product.id);
       }

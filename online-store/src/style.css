@@ -197,6 +197,27 @@ input[type="checkbox"]:checked {
   min-height: 44px;
 }
 
+.errorCart {
+  position: fixed;
+  top: 0;
+  text-align: center;
+  width: 100%;
+  background: #c0392b;
+  font-weight: bold;
+  z-index: 999;
+}
+
+.reset-filters {
+  margin: 20px 10px 0px 10px;
+  cursor: pointer;
+  background: #c0392b;
+  border: 0;
+  padding: 10px 20px;
+  font-weight: bold;
+  color: #ffffff;
+  box-shadow: 1.5px 1.5px 1px #cccccc;
+}
+
 .sliderYear, .sliderQuantity {
   margin: 55px 0 0 20px;
 }
