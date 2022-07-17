@@ -152,8 +152,9 @@ class Products {
     this.cartElement.innerHTML = `${this.productsInCart.length}`;
   }
 
-  filter(filter: string[][]) {
-    if (filter[0].length === 0 && filter[1].length === 0 && filter[2].length === 0) {
+  filter(filter: [string[], string[], string[], [number, number], [number, number]]) {
+
+    if (filter[0].length === 0 && filter[1].length === 0 && filter[2].length === 0 && filter[3][0] === null && filter[4][0] === null) {
       this.products.forEach(product => {
         product.visible = true;
       });
@@ -176,6 +177,10 @@ class Products {
       if (filter[2].length !== 0) {
         filter[2].includes(product.popular) ? status[2] = true : status[2] = false;
       }
+
+      product.year >= Math.round(filter[3][0]) && product.year <= Math.round(filter[3][1]) ? status[3] = true : status[3] = false;
+
+      product.quantity >= Math.round(filter[4][0]) && product.quantity <= Math.round(filter[4][1]) ? status[4] = true : status[4] = false;
 
       status.every((element) => { 
         if (element === true) return true

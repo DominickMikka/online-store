@@ -15,7 +15,17 @@ header {
   display: flex;
   gap: 20px;
   justify-content: space-between;
-  margin: 20px;
+  padding: 20px;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+  position: fixed;
+  background: #eeeeee;
+  box-shadow: 1px 1px 10px #000;
+}
+
+.logo {
+  text-align: center;
 }
 
 .logo a {
@@ -29,8 +39,12 @@ header {
   font-size: 12px;
 }
 
+.search-wrapper {
+  width: 400px;
+}
+
 .search__input {
-  max-width: 200px;
+  width: 100%;
   height: 30px;
   padding: 5px 5px 5px 10px;
 }
@@ -38,7 +52,7 @@ header {
 main {
   display: flex;
   gap: 40px;
-  margin: 20px;
+  margin: 110px 20px 20px;
   width: calc(100% - 40px);
 }
 
@@ -276,6 +290,10 @@ input[type="checkbox"]:checked {
     justify-content: center;
   }
 
+  .search-wrapper {
+    width: 200px;
+  }
+
   .filters {
     justify-content: space-between;
     display: flex;
@@ -310,6 +328,10 @@ input[type="checkbox"]:checked {
 
   header {
     flex-wrap: wrap;
+  }
+
+  main {
+    margin: 170px 20px 20px;
   }
 
   .search__input {

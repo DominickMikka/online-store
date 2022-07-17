@@ -16,17 +16,17 @@ const clearFilersElement = <HTMLElement>document.querySelector('.reset-filters')
 const sliderYearproductsElement = <HTMLElement>document.querySelector('.sliderYear');
 const sliderQuantityproductsElement = <HTMLElement>document.querySelector('.sliderQuantity');
 
-noUiSlider.create(sliderYearproductsElement, {
-  range: {'min': 2020, 'max': 2022},
+const yearFilter = noUiSlider.create(sliderYearproductsElement, {
+  range: {'min': 2014, 'max': 2022},
   snap: false,
-  start: [2020, 2022],
+  start: [2014, 2022],
   tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
 });
 
-noUiSlider.create(sliderQuantityproductsElement, {
-  range: {'min': 10, 'max': 25},
+const quantityFilter = noUiSlider.create(sliderQuantityproductsElement, {
+  range: {'min': 3, 'max': 25},
   snap: false,
-  start: [10, 25],
+  start: [3, 25],
   tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
 });
 
@@ -47,6 +47,7 @@ filtersPlatformElement.forEach(e => {
   e.addEventListener('change', () => {
     const filters = getFilters();
     products.filter(filters);
+    console.log('test');
   });
 });
 
@@ -68,6 +69,16 @@ const getFilters = () => {
   const filtersPlatform: string[] = [];
   const filtersBrand: string[] = [];
   const filtersPopular: string[] = [];
+  const filtersYear = yearFilter.get(true);
+  const filtersQuantity = quantityFilter.get(true);
+
+  let year = [];
+  year.push(filtersYear);
+  year = year.flat();
+
+  let quantity = [];
+  quantity.push(filtersQuantity);
+  quantity = quantity.flat();
 
   filtersPlatformElement.forEach(element => {
     if ((element as HTMLInputElement).checked) 
@@ -84,8 +95,18 @@ const getFilters = () => {
       filtersPopular.push((element as HTMLInputElement).value);
   });
 
-  return [filtersPlatform, filtersBrand, filtersPopular]
+  return [ filtersPlatform, filtersBrand, filtersPopular, [year[0], year[1]], [quantity[0], quantity[1]] ] as [string[], string[], string[], [number, number], [number, number]]
 }
+
+yearFilter.on('update', () => {
+  const filters = getFilters();
+  products.filter(filters);
+});
+
+quantityFilter.on('update', () => {
+  const filters = getFilters();
+  products.filter(filters);
+});
 
 clearFilersElement.addEventListener('click', () => {
 
@@ -101,5 +122,8 @@ clearFilersElement.addEventListener('click', () => {
     (element as HTMLInputElement).checked = false
   });
 
-  products.filter([[], [], []]);
+  yearFilter.set([2014, 2022]);
+  quantityFilter.set([3, 25]);
+  products.filter([[], [], [], [2014, 2022], [3, 25]]);
+  
 });
