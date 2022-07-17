@@ -218,7 +218,7 @@ input[type="checkbox"]:checked {
   width: 100%;
   background: #c0392b;
   font-weight: bold;
-  z-index: 999;
+  z-index: 999999;
 }
 
 .reset-filters {

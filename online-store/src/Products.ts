@@ -3,30 +3,21 @@ import { IProduct } from './interfaces/products';
 class Products {
 
   products: IProduct[];
-  allProducts: IProduct[];
   productsElement: HTMLElement;
   cartElement: HTMLElement;
   productsInCart: number[];
   visibleProducts: IProduct[];
-  productsForSearch: IProduct[];
 
   constructor(products: IProduct[], productsElement: HTMLElement, cartElement: HTMLElement) {
     this.products = [...products];
-
-    this.products.forEach(product => {
-      product.visible = true;
-    });
-
+    this.products.forEach(product => { product.visible = true; });
     this.productsElement = productsElement as HTMLElement;
-    this.allProducts = [...products];
     this.cartElement = cartElement;
     this.productsInCart = [];
     this.visibleProducts = [...products];
-    this.productsForSearch = [];
   }
 
   renderProducts(products: IProduct[]) {
-
     let visibleProductsCount = 0;
 
     if (this.productsElement) {
@@ -42,7 +33,6 @@ class Products {
       if (visibleProductsCount === 0) {
         this.productsElement.innerHTML = `Sorry, no products :(`;
       }
-
     }
   }
 
@@ -110,23 +100,6 @@ class Products {
     this.renderProducts(this.products);
   }
 
-  findProduct(searchString: string) {
-    if (searchString === '') {
-      this.renderProducts(this.products);
-    } else {
-
-      this.visibleProducts.map((product) => {
-        if (product.name.toLowerCase().includes(searchString.toLowerCase())) {
-          product.visible = true;
-        } else {
-          product.visible = false;
-        }
-      });
-
-      this.renderProducts(this.products);
-    }
-  }
-
   addToCart(product: IProduct) {
     if (!this.productsInCart.includes(product.id)) {
 
@@ -152,9 +125,9 @@ class Products {
     this.cartElement.innerHTML = `${this.productsInCart.length}`;
   }
 
-  filter(filter: [string[], string[], string[], [number, number], [number, number]]) {
+  filter(filter: [string[], string[], string[], [number, number], [number, number], string]) {
 
-    if (filter[0].length === 0 && filter[1].length === 0 && filter[2].length === 0 && filter[3][0] === null && filter[4][0] === null) {
+    if (filter[0].length === 0 && filter[1].length === 0 && filter[2].length === 0 && filter[3][0] === null && filter[4][0] === null && filter[5] === '') {
       this.products.forEach(product => {
         product.visible = true;
       });
@@ -179,8 +152,8 @@ class Products {
       }
 
       product.year >= Math.round(filter[3][0]) && product.year <= Math.round(filter[3][1]) ? status[3] = true : status[3] = false;
-
       product.quantity >= Math.round(filter[4][0]) && product.quantity <= Math.round(filter[4][1]) ? status[4] = true : status[4] = false;
+      product.name.toLowerCase().includes(filter[5].toLowerCase()) ? status[5] = true : status[5] = false;
 
       status.every((element) => { 
         if (element === true) return true

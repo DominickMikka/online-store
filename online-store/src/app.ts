@@ -7,7 +7,7 @@ import Products from './Products';
 
 const productsElement = <HTMLElement>document.querySelector('.products');
 const sortElement = <HTMLSelectElement>document.querySelector('.sort');
-const search = <HTMLElement>document.querySelector('.search__input');
+const search = <HTMLInputElement>document.querySelector('.search__input');
 const cartElement = <HTMLElement>document.querySelector('.cartValue');
 const filtersPlatformElement = document.querySelectorAll<HTMLElement>('.platform-filters input[type=checkbox]');
 const filtersBrandElement = document.querySelectorAll<HTMLElement>('.brand-filters input[type=checkbox]');
@@ -15,6 +15,8 @@ const filtersPopularElement = document.querySelectorAll<HTMLElement>('.popular-f
 const clearFilersElement = <HTMLElement>document.querySelector('.reset-filters');
 const sliderYearproductsElement = <HTMLElement>document.querySelector('.sliderYear');
 const sliderQuantityproductsElement = <HTMLElement>document.querySelector('.sliderQuantity');
+
+search.focus();
 
 const yearFilter = noUiSlider.create(sliderYearproductsElement, {
   range: {'min': 2014, 'max': 2022},
@@ -39,15 +41,10 @@ sortElement.addEventListener('change', (e) => {
   products.sortProducts((e.target as HTMLSelectElement).value);
 });
 
-search.addEventListener('input', (e) => {
-  products.findProduct((e.target as HTMLSelectElement).value);
-});
-
 filtersPlatformElement.forEach(e => {
   e.addEventListener('change', () => {
     const filters = getFilters();
     products.filter(filters);
-    console.log('test');
   });
 });
 
@@ -66,6 +63,7 @@ filtersPopularElement.forEach(e => {
 });
 
 const getFilters = () => {
+  const filterSearch = search.value;
   const filtersPlatform: string[] = [];
   const filtersBrand: string[] = [];
   const filtersPopular: string[] = [];
@@ -95,7 +93,7 @@ const getFilters = () => {
       filtersPopular.push((element as HTMLInputElement).value);
   });
 
-  return [ filtersPlatform, filtersBrand, filtersPopular, [year[0], year[1]], [quantity[0], quantity[1]] ] as [string[], string[], string[], [number, number], [number, number]]
+  return [ filtersPlatform, filtersBrand, filtersPopular, [year[0], year[1]], [quantity[0], quantity[1]], filterSearch ] as [string[], string[], string[], [number, number], [number, number], string]
 }
 
 yearFilter.on('update', () => {
@@ -108,22 +106,16 @@ quantityFilter.on('update', () => {
   products.filter(filters);
 });
 
+search.addEventListener('input', () => {
+  const filters = getFilters();
+  products.filter(filters);
+});
+
 clearFilersElement.addEventListener('click', () => {
-
-  filtersPlatformElement.forEach(element => {
-    (element as HTMLInputElement).checked = false
-  });
-
-  filtersBrandElement.forEach(element => {
-    (element as HTMLInputElement).checked = false
-  });
-
-  filtersPopularElement.forEach(element => {
-    (element as HTMLInputElement).checked = false
-  });
-
+  filtersPlatformElement.forEach(element => (element as HTMLInputElement).checked = false);
+  filtersBrandElement.forEach(element => (element as HTMLInputElement).checked = false);
+  filtersPopularElement.forEach(element => (element as HTMLInputElement).checked = false);
   yearFilter.set([2014, 2022]);
   quantityFilter.set([3, 25]);
-  products.filter([[], [], [], [2014, 2022], [3, 25]]);
-  
+  products.filter([[], [], [], [2014, 2022], [3, 25], search.value]);
 });
