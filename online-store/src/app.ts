@@ -15,6 +15,7 @@ const filtersPopularElement = document.querySelectorAll<HTMLElement>('.popular-f
 const clearFilersElement = <HTMLElement>document.querySelector('.reset-filters');
 const sliderYearproductsElement = <HTMLElement>document.querySelector('.sliderYear');
 const sliderQuantityproductsElement = <HTMLElement>document.querySelector('.sliderQuantity');
+const clearSearchElement = <HTMLElement>document.querySelector('.clear-search');
 
 search.focus();
 
@@ -22,6 +23,7 @@ const yearFilter = noUiSlider.create(sliderYearproductsElement, {
   range: {'min': 2014, 'max': 2022},
   snap: false,
   start: [2014, 2022],
+  connect: true,
   tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
 });
 
@@ -29,6 +31,7 @@ const quantityFilter = noUiSlider.create(sliderQuantityproductsElement, {
   range: {'min': 3, 'max': 25},
   snap: false,
   start: [3, 25],
+  connect: true,
   tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
 });
 
@@ -118,4 +121,12 @@ clearFilersElement.addEventListener('click', () => {
   yearFilter.set([2014, 2022]);
   quantityFilter.set([3, 25]);
   products.filter([[], [], [], [2014, 2022], [3, 25], search.value]);
+});
+
+
+clearSearchElement.addEventListener('click', () => {
+  search.value = '';
+  const filters = getFilters();
+  products.filter(filters);
+  search.focus();
 });

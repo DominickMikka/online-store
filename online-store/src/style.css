@@ -40,13 +40,25 @@ header {
 }
 
 .search-wrapper {
+  position: relative;
   width: 400px;
 }
 
 .search__input {
   width: 100%;
   height: 30px;
-  padding: 5px 5px 5px 10px;
+  padding: 5px 25px 5px 10px;
+}
+
+.clear-search {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: 0px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 main {
@@ -79,6 +91,8 @@ main {
 .sort-wrapper {
   margin: 0 0 20px 0;
 }
+
+
 
 .sort {
   height: 30px;
@@ -240,7 +254,7 @@ input[type="checkbox"]:checked {
   cursor: pointer;
 }
 
-.sliderYear .noUi-connects, .sliderQuantity .noUi-connects {
+.sliderYear .noUi-connect, .sliderQuantity .noUi-connect {
   background: #c0392b;
 }
 
