@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack serve --open ",
     "build": "webpack --config ./webpack.config.js",
-    "deploy": "gh-pages -d ../dist -e online-store"
+    "deploy": "gh-pages -d ./dist -e online-store"
   },
   "author": "",
   "license": "ISC",
