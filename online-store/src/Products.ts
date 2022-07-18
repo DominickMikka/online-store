@@ -13,7 +13,15 @@ class Products {
     this.products.forEach(product => { product.visible = true; });
     this.productsElement = productsElement as HTMLElement;
     this.cartElement = cartElement;
-    this.productsInCart = [];
+
+    const inCart = localStorage.getItem('productsInCart');
+
+    if (inCart) {
+      this.productsInCart = JSON.parse(inCart);
+    } else {
+      this.productsInCart = [];
+    }
+    
     this.visibleProducts = [...products];
   }
 
@@ -70,6 +78,7 @@ class Products {
     button.addEventListener('click', () => {
       this.addToCart(product);
       this.productsInCart.includes(product.id) ? component.classList.add("in-cart") : component.classList.remove("in-cart");
+      localStorage.setItem('productsInCart', JSON.stringify(this.productsInCart));
     });
 
     this.productsInCart.includes(product.id) ? component.classList.add("in-cart") : component.classList.remove("in-cart");
@@ -98,6 +107,8 @@ class Products {
         break;
     }
     this.renderProducts(this.products);
+
+    localStorage.setItem('sort', sort);
   }
 
   addToCart(product: IProduct) {
