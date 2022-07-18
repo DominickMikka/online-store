@@ -5,7 +5,8 @@
   "main": "./src/app.ts",
   "scripts": {
     "start": "webpack serve --open ",
-    "build": "webpack --config ./webpack.config.js"
+    "build": "webpack --config ./webpack.config.js",
+    "deploy": "gh-pages -d ../dist -e online-store"
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +34,7 @@
   },
   "dependencies": {
     "@types/wnumb": "^1.2.1",
+    "gh-pages": "^4.0.0",
     "nouislider": "^15.6.0",
     "wnumb": "^1.2.0"
   }
